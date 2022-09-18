@@ -1,0 +1,34 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polls</title>
+    <link rel="stylesheet" href="{% static 'polls/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+</head>
+<body>
+    <header>
+        <h1>PollsQL</h1>
+    </header>
+    <main>
+        {% if latest_poll_list %}
+            <ul>
+                {% for poll in latest_poll_list %}
+                <li><a href="{% url 'polls:poll_detail' poll.id %}">{{ poll.name }}</a></li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No polls are available.</p>
+        {% endif %}
+    </main>
+    <footer>
+        <a href="#">Contacto</a>
+        <a href="#">Sobre Nosotros</a>
+        <a href="#">Planes</a>
+    </footer>
+</body>
+</html>

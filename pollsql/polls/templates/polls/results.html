@@ -1,0 +1,26 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question {{ question.id }} results</title>
+    <link rel="stylesheet" href="{% static 'polls/style.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/results.css' %}">
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Results | {{ question.text }}</h1>
+        </header>
+        <ul>
+        {% for answer in question.answer_set.all %}
+            <li>{{ answer.text }} -- {{ answer.votes }} vote{{ answer.votes|pluralize }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'polls:question_detail' question.id %}">Vote again?</a>
+    </main>
+</body>
+</html>

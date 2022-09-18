@@ -1,0 +1,27 @@
+header {
+    font-size: 40px;
+}
+
+main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+ul {
+    background: linear-gradient(
+        to right,
+        hsl(98 100% 62%),
+        hsl(204 100% 59%)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-align: center;
+    border: 1px solid white;
+}
+
+li {
+    border: none;
+}

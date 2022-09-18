@@ -1,4 +1,6 @@
+import datetime
 from django.db import models
+from django.utils import timezone
 
 from accounts.models import CustomUser
 
@@ -14,10 +16,19 @@ class Poll(models.Model):
         max_length=200,
         blank=True
     )
-    image = models.ImageField()
+    image = models.ImageField(
+        default='',
+        null=True,
+        blank=True
+    )
     creation_date = models.DateTimeField(
         'date creation'
     )
+
+    def was_published_recently(self):
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.creation_date <= now
+
     def __str__(self):
         return self.name
 
@@ -52,3 +63,4 @@ class Answer(models.Model):
     creation_date = models.DateTimeField(
         'date creation'
     )
+
