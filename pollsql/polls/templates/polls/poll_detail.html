@@ -16,11 +16,11 @@
     </header>
     <main>
             {% if poll.question_set.all %}
-                <ul>
                 {% for question in poll.question_set.all %}
-                    <li><a href="{% url 'polls:question_detail' question.id %}">{{ question.text }}</a></li>
+                <article class="card">
+                    <h2 class="card--title"><a href="{% url 'polls:question_detail' question.id %}">{{ question.text }}</a></h2>
+                </article>
                 {% endfor %}
-                </ul>
                 {% else %}
                     <p>No questions are available.</p>
             {% endif %}

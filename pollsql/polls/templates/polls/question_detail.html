@@ -7,16 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question {{ question.id }} detail</title>
+    
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-    <link rel="stylesheet" href="{% static 'polls/question_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/detail.css' %}">
 </head>
 <body>
     <main>
         {% if question.answer_set.all %}
+            <header>
+                <h1>{{ question.text }}</h1>
+            </header>
+        <article class="card">
             <form action="{% url 'polls:vote' question.id %}" method="post">
                 {% csrf_token %}
                 <fieldset>
-                    <legend><h1>{{ question.text }}</h1></legend>
                     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                     {% for answer in question.answer_set.all %}
                         <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}">
@@ -25,6 +29,7 @@
                 </fieldset>
                 <input type="submit" value="Vote">
                 </form>
+        </article>
         {% else %}
             <p>No answers are available.</p>
         {% endif%}

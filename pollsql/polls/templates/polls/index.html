@@ -16,11 +16,14 @@
     </header>
     <main>
         {% if latest_poll_list %}
-            <ul>
                 {% for poll in latest_poll_list %}
-                <li><a href="{% url 'polls:poll_detail' poll.id %}">{{ poll.name }}</a></li>
+                
+                <article class="card">
+                    <img class="card--description-image" src="{{ poll.image }}">
+                    <h2 class="card--title"><a href="{% url 'polls:poll_detail' poll.id %}">{{ poll.name }}</a></h2>
+                    <p class="card--text-description">{{ poll.description }}</p>
+                </article>
                 {% endfor %}
-            </ul>
             {% else %}
             <p>No polls are available.</p>
         {% endif %}
