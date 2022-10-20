@@ -1,12 +1,11 @@
-from asyncio.base_futures import _future_repr_info
 import datetime
-from venv import create
 
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
 
-from .models import Poll, Question, Answer
+from .models import Poll, Question, Answer, only_characters_validator
 from accounts.models import CustomUser
 
 
@@ -76,6 +75,76 @@ class PollModelTests(TestCase):
         recent_poll = create_poll(user)
         recent_poll.creation_date = time
         self.assertIs(recent_poll.was_published_recently(), True)
+    
+    def test_allowed_characters_to_name(self):
+        '''
+            This function returns true for allowed characters to poll's name
+        '''
+        user = create_user()
+        poll = create_poll(user)
+        poll.name = 'This a valid name'
+        self.assertIs(only_characters_validator(poll.name), None)
+        poll.name = 'frutas ricas en vitamina c'
+        self.assertIs(only_characters_validator(poll.name), None)
+        poll.name = 'LENGUAJE DE PROGRAMACION FAVORITO'
+        self.assertIs(only_characters_validator(poll.name), None)
+    
+    def test_not_allowed_characters_to_name(self):
+        '''
+            This function returns true for not allowed characters to poll's name
+        '''
+        try:
+            user = create_user()
+            poll = create_poll(user)
+            poll.name = 'This_is_not_valid_name'
+            self.assertIs(only_characters_validator(poll.name), ValidationError('This text is not valid'))
+        except ValidationError:
+            pass
+        try:
+            poll.name = 'Tipo de bases de *datos'
+            self.assertIs(only_characters_validator(poll.name), ValidationError('This text is not valid'))
+        except ValidationError:
+            pass
+        try:
+            poll.name = '¿Cual es tu paradigma favorito?'
+            self.assertIs(only_characters_validator(poll.name), ValidationError('This text is not valid'))
+        except ValidationError:
+            pass
+    
+    def test_allowed_characters_to_description(self):
+        '''
+            This function returns true for allowed characters to poll's description
+        '''
+        user = create_user()
+        poll = create_poll(user)
+        poll.description = 'This a valid description'
+        self.assertIs(only_characters_validator(poll.description), None)
+        poll.description = 'Esta encuesta se trata de los paradigmas de programacion'
+        self.assertIs(only_characters_validator(poll.description), None)
+        poll.description = 'Encuesta acerca de cuales frutas son mas ricas en vitamina C'
+        self.assertIs(only_characters_validator(poll.description), None)
+
+    def test_not_allowed_characters_to_name(self):
+        '''
+            This function returns true for not allowed characters to poll's description
+        '''
+        try:
+            user = create_user()
+            poll = create_poll(user)
+            poll.description = 'This_is_not_valid_description'
+            self.assertIs(only_characters_validator(poll.description), ValidationError('This text is not valid'))
+        except ValidationError:
+            pass
+        try:
+            poll.description = 'encuesta sobre los tipos de bases de *datos'
+            self.assertIs(only_characters_validator(poll.description), ValidationError('This text is not valid'))
+        except ValidationError:
+            pass
+        try:
+            poll.description = 'los frameworks web mas\ famosos'
+            self.assertIs(only_characters_validator(poll.description), ValidationError('This text is not valid'))
+        except ValidationError:
+            pass
 
 
 class PollIndexView(TestCase):
