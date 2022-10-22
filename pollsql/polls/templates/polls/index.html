@@ -7,21 +7,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Polls</title>
-    <link rel="stylesheet" href="{% static 'polls/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'polls/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
 </head>
 <body>
-    <header>
-        <h1>PollsQL</h1>
+    <header class="">
+        <h1 class="p-4">PollsQL</h1>
     </header>
     <main>
         {% if latest_poll_list %}
                 {% for poll in latest_poll_list %}
                 
-                <article class="card">
+                <article class="card mx-auto">
                     <img class="card--description-image" src="{{ poll.image }}">
-                    <h2 class="card--title"><a href="{% url 'polls:poll_detail' poll.id %}">{{ poll.name }}</a></h2>
-                    <p class="card--text-description">{{ poll.description }}</p>
+                    <h4 class="card-title">
+                        <a href="{% url 'polls:poll_detail' poll.id %}">{{ poll.name }}</a>
+                    </h4>
+                    <p class="card-body">{{ poll.description }}</p>
                 </article>
                 {% endfor %}
             {% else %}

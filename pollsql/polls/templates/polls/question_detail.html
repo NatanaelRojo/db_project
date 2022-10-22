@@ -2,37 +2,42 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Question {{ question.id }} detail</title>
-    
+
+    <link rel="stylesheet" href="{% static 'polls/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'polls/style.css' %}">
-    <link rel="stylesheet" href="{% static 'polls/detail.css' %}">
 </head>
+
 <body>
     <main>
+        
         {% if question.answer_set.all %}
-            <header>
-                <h1>{{ question.text }}</h1>
-            </header>
+       
         <article class="card">
-            <form action="{% url 'polls:vote' question.id %}" method="post">
+            <div class="card-header w-100 text-center">
+                <h1>{{ question.text }}</h1>
+            </div>
+            <form action="{% url 'polls:vote' question.id %}" method="post" class="card-body text-center">
                 {% csrf_token %}
                 <fieldset>
                     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                     {% for answer in question.answer_set.all %}
-                        <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}">
-                        <label for="answer{{ forloop.counter }}">{{ answer.text }}</label><br>
+                    <input type="radio" name="answer" id="answer{{ forloop.counter }}" value="{{ answer.id }}">
+                    <label for="answer{{ forloop.counter }}">{{ answer.text }}</label><br>
                     {% endfor %}
                 </fieldset>
-                <input type="submit" value="Vote">
-                </form>
+                <input type="submit" value="Vote" class="btn-primary rounded">
+            </form>
         </article>
         {% else %}
-            <p>No answers are available.</p>
+        <p>No answers are available.</p>
         {% endif%}
     </main>
 </body>
+
 </html>
